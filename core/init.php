@@ -6,7 +6,7 @@ $GLOBALS['config'] = array(
         'host' => 'localhost',
         'username' => 'root',
         'password' => '',
-        'db' => 'loginsystem'
+        'db' => 'teamprojekt'
     ),
     'remember' => array(
         'cookie_name' => 'hash',
@@ -15,6 +15,9 @@ $GLOBALS['config'] = array(
     'session' => array(
         'session_name' => 'user',
         'token_name' => 'token' 
+    ),
+    'settings' => array(
+        'masterpassword' => 'master'
     )
 );
 

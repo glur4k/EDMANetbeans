@@ -71,7 +71,11 @@ class Validate {
     }
     
     public function errors() {
-        return $this->_errors;
+        $errors = '';
+        foreach ($this->_errors as $error) {
+            $errors .= '<div class="alert alert-danger" role="alert">' . $error . '</div>';
+        }
+        return $errors;
     }
     
     public function passed() {
