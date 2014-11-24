@@ -21,6 +21,8 @@ $GLOBALS['config'] = array(
     )
 );
 
+define('HOME', 'http://localhost/virtual/EDMANetBeans/');
+
 /**
  * Lädt eine Klasse automatisch beim Aufruf $class = new Class();
  * Somit muss nicht ständig ein require auf die benötigte Klasse gemacht werden.

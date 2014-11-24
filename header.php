@@ -41,17 +41,13 @@ require_once 'core/init.php';
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="index.php">Start</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown-Menü <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Verwaltung<span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Aktion</a></li>
-                                <li><a href="#">Andere Aktion</a></li>
-                                <li><a href="#">Irgendwas anderes</a></li>
+                                <li><a href="#">Projektverwaltung</a></li>
+                                <li><a href="#">Messreihenverwaltung</a></li>
                                 <li class="divider"></li>
-                                <li class="dropdown-header">Nav-Überschrift</li>
-                                <li><a href="#">Abgetrennter Link</a></li>
-                                <li><a href="#">Noch ein abgetrennter Link</a></li>
+                                <li><a href="logout.php">Projekt wechseln</a></li>
                             </ul>
                         </li>
                     </ul>

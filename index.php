@@ -1,8 +1,6 @@
 <?php 
 require_once 'header.php';
 
-$db = DB::getInstance();
-
 if (Input::exists()) {
     if (Token::check(Input::get('token'))) {
         $validate = new Validate();
@@ -15,7 +13,7 @@ if (Input::exists()) {
 
         if ($validation->passed()) {
             if ($login) {
-                Redirect::to('index.php');
+                Redirect::to('home.php');
             } else {
                 echo 'login failed';
             }
@@ -37,11 +35,12 @@ if (Input::exists()) {
                 <select class="form-control" id="projekt">
                     <option value="0">Projekt hinzuf&uuml;gen</option>
                     <?php
+                    $db = DB::getInstance();
+                    
                     $db->query('SELECT name, id FROM projekte');
                     foreach ($db->results() as $projekt) {
                         echo '<option value="' . $projekt->id . '">' . escape($projekt->name) . '</option>';
                     }
-
                     ?>
                 </select>
             </div>
@@ -64,5 +63,4 @@ if (Input::exists()) {
 </div>
 
 <?php
-    require_once 'footer.php';
-?>
+require_once 'footer.php';

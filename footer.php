@@ -2,9 +2,7 @@
             <!-- Content ends -->
         </div> <!-- /container -->
 
-        <!-- Bootstrap-JavaScript
-        ================================================== -->
-        <!-- Am Ende des Dokuments platziert, damit Seiten schneller laden -->
+        <!-- Bootstrap-JavaScript -->
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <!-- IE10-Anzeigefenster-Hack für Fehler auf Surface und Desktop-Windows-8 -->
