@@ -55,9 +55,6 @@ require_once 'core/init.php';
                             </ul>
                         </li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="active"><a href="./">Oben fixiert <span class="sr-only">(aktuell)</span></a></li>
-                    </ul>
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
