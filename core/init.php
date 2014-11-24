@@ -44,3 +44,7 @@ if (Cookie::exists(Config::get('remember/cookie_name')) && !Session::exists(Conf
         $user->login();
     }
 }
+
+function setMasterPassWord($newPass) {
+    $GLOBALS['config']['settings']['masterpassword'] = $newPass;
+} 
