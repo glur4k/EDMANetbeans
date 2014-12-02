@@ -71,13 +71,7 @@ class Validate {
     }
     
     public function errors() {
-        $errors = '';
-        foreach ($this->_errors as $error) {
-            $errors .= '<div class="alert alert-danger" role="alert">'
-                    . '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true">'
-                    . '</span><span class="sr-only">Fehler:</span> ' . $error . '</div>';
-        }
-        return $errors;
+        return $this->_errors;
     }
     
     public function passed() {

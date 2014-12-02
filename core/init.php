@@ -13,7 +13,7 @@ $GLOBALS['config'] = array(
         'cookie_expiry' => 604800
     ),
     'session' => array(
-        'session_name' => 'user',
+        'session_name' => 'projekt',
         'token_name' => 'token' 
     ),
     'settings' => array(
