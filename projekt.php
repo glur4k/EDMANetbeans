@@ -20,15 +20,6 @@ if (Input::exists()) {
             $projekt = new Projekt();
 
             $salt = Hash::salt(32);
-            
-            if (!empty($_FILES)) {
-                $uploader = new Uploader($_FILES);
-                
-                if (empty($uploader->errors())) {
-                    print_r($uploader->succeeded());
-                }
-            }
-
 
             if ($projekt->data()->id > 0) {
                 // Projekt updaten
@@ -118,10 +109,21 @@ if (Input::exists()) {
 
                 <div class="panel-body">
                     <div class="row form-group">
-                        <label class="col-xs-12" for="projektbeschreibung">Projektbeschreibung hochladen</label>
-                        <input class="col-xs-12 col-md-9 upload" name="files" id="files" type="file" id="projektbeschreibung">
-                        <div class="col-md-3">
+                        <label class="col-xs-12 col-md-9" for="files">Projektbeschreibung hochladen</label>
+                        <div class="progress-pie-chart" style="display: none;">
+                                <div class="ppc-progress">
+                                    <div class="ppc-progress-fill"></div>
+                                </div>
+                                <div class="ppc-percents">
+                                    <div class="pcc-percents-wrapper">
+                                        <span>40%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        <input class="col-xs-12 col-md-9" name="file[]" id="files" type="file" id="projektbeschreibung" multiple="multiple">
+                        <div class="col-md-3" id="upload">
                             <button type="submit" name="upload" id="upload" class="btn btn-primary btn-sm pull-right">Upload</button>
+                            
                         </div>
                     </div>
                     <p><strong>Achtung:</strong> Wenn der Name der Datei schon vorhanden ist, wird die existierende Beschreibung überschrieben.</p>
@@ -137,6 +139,27 @@ if (Input::exists()) {
             <a href="index.php" class="btn btn-link">Abbrechen</a>
         </div>
     </div>
+
+    <script>
+        $('#upload').click(function(event) {
+            event.preventDefault();
+            var f = $('#files')[0];
+            
+            app.uploader({
+                files: f,
+                processor: 'upload.php',
+
+                finished: function(data) {
+                    // Blende Button ein
+                    // Fuege Element in Tabelle ein
+                },
+
+                error: function(data) {
+                    // Zeige Fehlermeldung
+                }
+            });
+        });
+    </script>
 </form>
 
 <?php

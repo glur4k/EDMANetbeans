@@ -12,7 +12,7 @@ require_once 'core/init.php';
         <meta name="author" content="">
 
         <title>EDMA - HTWG-Konstanz</title>
-        
+
         <!-- Favicon -->
         <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
         <!-- Bootstrap-CSS -->
@@ -20,6 +20,11 @@ require_once 'core/init.php';
 
         <!-- Besondere Stile für diese Vorlage -->
         <link href="css/bootstrap-theme.css" rel="stylesheet">
+
+        <!-- Bootstrap-JavaScript -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+
 
         <!-- Unterstützung für Media Queries und HTML5-Elemente in IE8 über HTML5 shim und Respond.js -->
         <!--[if lt IE 9]>
@@ -30,22 +35,22 @@ require_once 'core/init.php';
 
     <body>
         <?php
-            if (Session::exists('error')) {
-                ?>
-                <div class="alert alert-danger alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Schließen</span></button>
-                    <strong>Warnung!</strong> <?php echo Session::flash('error'); ?>
-                </div>
-                <?php
-            }
-            if (Session::exists('message')) {
-                ?>
-                <div class="alert alert-info alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Schließen</span></button>
-                    <strong>Warnung!</strong> <?php echo Session::flash('message'); ?>
-                </div>
-                <?php
-            }
+        if (Session::exists('error')) {
+            ?>
+            <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Schließen</span></button>
+                <strong>Warnung!</strong> <?php echo Session::flash('error'); ?>
+            </div>
+            <?php
+        }
+        if (Session::exists('message')) {
+            ?>
+            <div class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Schließen</span></button>
+                <strong>Warnung!</strong> <?php echo Session::flash('message'); ?>
+            </div>
+            <?php
+        }
         ?>
         <!-- Fixierte Navbar -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation">
