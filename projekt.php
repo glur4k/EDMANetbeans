@@ -108,23 +108,18 @@ if (Input::exists()) {
                 </table>
 
                 <div class="panel-body">
-                    <div class="row">
+                    <div class="row form-group">
                         <label class="col-xs-12 col-md-9" for="files">Projektbeschreibung hochladen</label>
-                    </div>
-                            <div class="progress-pie-chart" style="display: none;">
-                                <div class="ppc-progress">
-                                    <div class="ppc-progress-fill"></div>
-                                </div>
-                                <div class="ppc-percents">
-                                    <div class="pcc-percents-wrapper">
-                                        <span>40%</span>
-                                    </div>
+                        <div class="progress-pie-chart" style="display: none;">
+                            <div class="ppc-progress">
+                                <div class="ppc-progress-fill"></div>
+                            </div>
+                            <div class="ppc-percents">
+                                <div class="pcc-percents-wrapper">
+                                    <span>40%</span>
                                 </div>
                             </div>
-                    <div class="form-horizontal">
-                        <div class="form-group">
                         </div>
-                    </div>
                         <input class="col-xs-12 col-md-9" name="file[]" id="files" type="file" id="projektbeschreibung" multiple="multiple">
                         <div class="col-md-3" id="upload">
                             <button type="submit" name="upload" id="upload" class="btn btn-primary btn-sm pull-right">Upload</button>
