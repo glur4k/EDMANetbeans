@@ -108,9 +108,10 @@ if (Input::exists()) {
                 </table>
 
                 <div class="panel-body">
-                    <div class="row form-group">
+                    <div class="row">
                         <label class="col-xs-12 col-md-9" for="files">Projektbeschreibung hochladen</label>
-                        <div class="progress-pie-chart" style="display: none;">
+                    </div>
+                            <div class="progress-pie-chart" style="display: none;">
                                 <div class="ppc-progress">
                                     <div class="ppc-progress-fill"></div>
                                 </div>
@@ -120,6 +121,10 @@ if (Input::exists()) {
                                     </div>
                                 </div>
                             </div>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                        </div>
+                    </div>
                         <input class="col-xs-12 col-md-9" name="file[]" id="files" type="file" id="projektbeschreibung" multiple="multiple">
                         <div class="col-md-3" id="upload">
                             <button type="submit" name="upload" id="upload" class="btn btn-primary btn-sm pull-right">Upload</button>
@@ -142,6 +147,11 @@ if (Input::exists()) {
 
     <script>
         $('#upload').click(function(event) {
+            var pie = $('.progress-pie-chart');
+            var button = $(this);
+            button.toggle();
+            pie.toggle();
+            
             event.preventDefault();
             var f = $('#files')[0];
             
@@ -150,8 +160,10 @@ if (Input::exists()) {
                 processor: 'upload.php',
 
                 finished: function(data) {
-                    // Blende Button ein
+                    //pie.toggle();
+                    //button.toggle();
                     // Fuege Element in Tabelle ein
+                    console.log(data);
                 },
 
                 error: function(data) {

@@ -30,14 +30,12 @@ var app = app || {};
             }
         });
         
-        xmlhttp.upload.addEventListener('progess', function(event) {
-            var percent;
-            
-            if (event.lenghtComputable === true) {
-                percent = Math.round((event.loaded / event.total) * 100);
-                setProgress(percent);
-            }
-        });
+        xmlhttp.upload.onprogress = function(e) {
+            var percentComplete;
+
+            percentComplete = Math.round((e.loaded / e.total) * 100);
+            setProgress(percentComplete);
+        };
 
         xmlhttp.open('post', o.options.processor);
         xmlhttp.send(data);
@@ -55,10 +53,9 @@ var app = app || {};
         return data;
     };
 
-    setProgress = function (value) {
+    setProgress = function(percent) {
         var $ppc = $('.progress-pie-chart'),
-                percent = parseInt($ppc.data('percent')),
-                value = 360 * percent / 100;
+            value = 360 * percent / 100;
 
         if (percent > 50) {
             $ppc.addClass('gt-50');

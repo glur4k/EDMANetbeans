@@ -13,23 +13,32 @@ class Uploader {
             $_failed = [],
             $_succeeded = [];
 
-    public function __construct($files, $dir, $ajax) {
+    public function __construct($files, $ajax) {
         foreach ($files['file']['name'] as $key => $name) {
             if ($files['file']['error'][$key] === 0) {
 
                 $temp = $_FILES['file']['tmp_name'][$key];
-
-                // File Validation 
-
+                
                 $this->_files[] = array(
                     'name' => $name,
                     'temp' => $temp
                 );
+                
+                // Validate Files
+                
+                
+                if (move_uploaded_file($temp, "uploads/tmp/{$name}") === true) {
+                    $this->_succeeded[] = array(
+                        'name' => $name
+                    );
+                } else {
+                    $this->_failed[] = array(
+                        'name' => $name
+                    );
+                }
             }
         }
-        
-        $this->moveFiles($dir);
-        
+
         if ($ajax !== '') {
             echo json_encode(array(
                 'succeeded' => $this->_succeeded,
@@ -40,16 +49,11 @@ class Uploader {
 
     private function moveFiles($dir) {
         foreach ($this->_files as $file) {
-            if (move_uploaded_file($file['temp'], $dir . $file['name']) === true) {
-                $this->_succeeded[] = array(
-                    'name' => $file['name']
-                );
-            } else {
-                $this->_failed[] = array(
-                    'name' => $file['name']
-                );
-            }
         }
+    }
+
+    private function validate() {
+        
     }
 
     public function errors() {
@@ -59,4 +63,5 @@ class Uploader {
     public function succeeded() {
         return $this->_succeeded;
     }
+
 }
