@@ -14,29 +14,19 @@ if (Input::exists()) {
 
         if ($validation->passed()) {
             $projekt = new Projekt(Input::get('projekt'));
-            
-            if (Input::get('password') === 'master') {
-                $projekt->setMaster();
-            }
-            
-            if (Input::get('projekt') === 'new') {
-                if ($projekt->canEdit()) {
-                    Session::flash('yes', 'du darfst');
+
+            $login = $projekt->login(Input::get('projekt'), Input::get('password'));
+
+            if ($login) {
+                if (Input::get('projekt') === 'new') {
                     Redirect::to('projekt.php');
                 } else {
-                    Session::flash('error', 'Sie haben keine'
-                        . ' Berechtigungen ein neues Projekt anzulegen!');
+                    Redirect::to('index.php');
                 }
             } else {
-                $login = $projekt->login(Input::get('projekt'), Input::get('password'));
-
-                if ($login) {
-                    Redirect::to('index.php');
-                } else {
-                    Session::flash('error', 'Login fehlgeschlagen!');
-                }
+                Session::flash('error', 'Sie haben ein falsches Passwort eingegeben oder keine Berechtigungen!');
+                Redirect::to('login.php');
             }
-            Redirect::to('login.php');
         } else {
             foreach ($validation->errors() as $error) {
                 echo $error . "<br>";
@@ -72,7 +62,7 @@ if (Input::exists()) {
                 </div>
             </div>
             <div class="form-group">
-                <a href="#" tabindex="0" role="button" data-toggle="popover" data-placement="left" title="Passwort vergessen?" data-trigger="focus" data-content="Inhalt">Passwort vergessen?</a>
+                <a href="#" tabindex="0" id="password-popover" data-html="true" role="button" data-toggle="popover" data-placement="left" title="Passwort vergessen?" data-trigger="focus" data-content="Wenn Sie ihr Passwort für ein Projekt vergessen haben, wenden Sie sich bitte telefonisch oder per E-Mail an das Kunstofflabor der HTWG-Konstanz.<br><br>Tel.: 202-555-0114<br><br><a href='mailto:bla@mail.com'>mail@bla.com</a>">Passwort vergessen?</a>
             </div>
             <input name="token" type="hidden" value="<?php echo Token::generate(); ?>">
             <input class="btn btn-lg btn-primary btn-block" type="submit" value="&Ouml;ffnen">

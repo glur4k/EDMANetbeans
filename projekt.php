@@ -2,6 +2,9 @@
 require_once 'header.php';
 
 $projekt = new Projekt();
+if (!$projekt->isMaster()) {
+    Redirect::to('login.php');
+}
 
 if (Input::exists()) {
     if (Token::check(Input::get('token'))) {
@@ -17,8 +20,6 @@ if (Input::exists()) {
         ));
 
         if ($validation->passed()) {
-            $projekt = new Projekt();
-
             $salt = Hash::salt(32);
 
             if ($projekt->data()->id > 0) {
@@ -109,24 +110,26 @@ if (Input::exists()) {
 
                 <div class="panel-body">
                     <div class="row form-group">
-                        <label class="col-xs-12 col-md-9" for="files">Projektbeschreibung hochladen</label>
-                        <div class="progress-pie-chart" style="display: none;">
-                            <div class="ppc-progress">
-                                <div class="ppc-progress-fill"></div>
+                        <label class="col-xs-12" for="files">Projektbeschreibung hochladen <small>(Max: <?php echo ini_get('post_max_size'); ?>)</small></label>
+                        <div class="form-horizontal" role="form">
+                            <input class="col-md-9 control-label" name="file[]" id="files" type="file" id="projektbeschreibung" multiple="multiple" data-maxsize="<?php echo Utils::convertBytes(ini_get('post_max_size')); ?>">
+                            <div class="col-md-3">
+                                <button type="submit" name="upload" id="upload" class="btn btn-primary btn-sm pull-right form-control">Upload</button>
                             </div>
-                            <div class="ppc-percents">
-                                <div class="pcc-percents-wrapper">
-                                    <span>40%</span>
+                            <div class="col-md-3">
+                                <div id="progress-circle" style="display: none;">
+                                    <div class="progress-circle-bar">
+                                        <canvas id="activeProgress" class="progress-active"  height="55px" width="55px"></canvas>
+                                        <p>0%</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <input class="col-xs-12 col-md-9" name="file[]" id="files" type="file" id="projektbeschreibung" multiple="multiple">
-                        <div class="col-md-3" id="upload">
-                            <button type="submit" name="upload" id="upload" class="btn btn-primary btn-sm pull-right">Upload</button>
-                            
-                        </div>
                     </div>
-                    <p><strong>Achtung:</strong> Wenn der Name der Datei schon vorhanden ist, wird die existierende Beschreibung überschrieben.</p>
+                    <div id="upload-errors" style="display: none;">
+                        <div class="alert alert-danger"></div>
+                    </div>
+                    <p><strong>Achtung:</strong> Wenn der Name der Datei schon vorhanden ist, wird die existierende Datei überschrieben.</p>
 
                 </div>
             </div>
@@ -141,28 +144,45 @@ if (Input::exists()) {
     </div>
 
     <script>
-        $('#upload').click(function(event) {
-            var pie = $('.progress-pie-chart');
+        $('#upload').click(function (event) {
+            var pie = $('#progress-circle');
+            var errorBox = $('#upload-errors');
+            var $pCaption = $('.progress-circle-bar p');
             var button = $(this);
-            button.toggle();
-            pie.toggle();
-            
-            event.preventDefault();
+            var aProgress = document.getElementById('activeProgress');
+            var maxSize = $('#files').data('maxsize');
             var f = $('#files')[0];
             
+            event.preventDefault();
+
+            var msg = checkMaxsize(maxSize, f);
+            if (msg !== '') {
+                errorBox.show();
+                $('#upload-errors .alert-danger').html('');
+                $('#upload-errors .alert-danger').append(msg);
+                button.blur();
+                return false;
+            } else {
+                errorBox.hide();
+            }
+            button.toggle();
+            pie.toggle();
+
             app.uploader({
                 files: f,
+                pCaption: $pCaption,
+                aProgress: aProgress,
+                maxsize: maxSize,
                 processor: 'upload.php',
-
-                finished: function(data) {
-                    //pie.toggle();
-                    //button.toggle();
+                finished: function (data) {
+                    pie.toggle();
+                    button.toggle();
                     // Fuege Element in Tabelle ein
                     console.log(data);
                 },
-
-                error: function(data) {
-                    // Zeige Fehlermeldung
+                error: function (data) {
+                    console.log(data);
+                    $('#upload-errors').append('error');
                 }
             });
         });

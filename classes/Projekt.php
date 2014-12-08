@@ -19,8 +19,11 @@ class Projekt {
 
         if (!$projekt) {
             if (Session::exists($this->_sessionName)) {
-                echo 'Session: session exists!';
                 $projekt = Session::get($this->_sessionName);
+
+                if (Session::exists('master')) {
+                    $this->_isMaster = true;
+                }
 
                 if ($this->find($projekt)) {
                     $this->_isLoggedIn = true;
@@ -33,13 +36,19 @@ class Projekt {
 
     private function find($projekt = null) {
         if ($projekt) {
-            $field = (is_numeric($projekt)) ? 'id' : 'name';
-            
-            $data = $this->_db->get('projekte', array($field, '=', $projekt));
+            if ($projekt === 'new') {
+                $this->_data->id = 'Neues Projekt';
 
-            if ($data->count()) {
-                $this->_data = $data->first();
                 return true;
+            } else {
+                $field = (is_numeric($projekt)) ? 'id' : 'name';
+
+                $data = $this->_db->get('projekte', array($field, '=', $projekt));
+
+                if ($data->count()) {
+                    $this->_data = $data->first();
+                    return true;
+                }
             }
         }
     }
@@ -51,8 +60,13 @@ class Projekt {
             $projekt = $this->find($projekt);
 
             if ($projekt) {
-                // TODO: Hash
-                if ($password === $this->data()->passwort || $password === 'master') {
+                // TODO: Hash         
+                if ($password === 'master') {
+                    Session::put($this->_sessionName, $this->data()->id);
+                    Session::put('master', 1);
+
+                    return true;
+                } else if ($password === $this->data()->password) {
                     Session::put($this->_sessionName, $this->data()->id);
 
                     return true;
@@ -62,21 +76,13 @@ class Projekt {
         return false;
     }
 
-    /**
-     * Checkt ob der aktuelle User das Masterpasswort eingegeben hat
-     * 
-     * @return boolean
-     */
-    public function canEdit() {
-        return $this->_isMaster;
-    }
-
     public function exists() {
         return (!empty($this->data())) ? true : false;
     }
 
     public function logout() {
         Session::delete($this->_sessionName);
+        Session::delete('master');
     }
 
     public function data() {
@@ -86,8 +92,9 @@ class Projekt {
     public function isLoggedIn() {
         return $this->_isLoggedIn;
     }
-    
-    public function setMaster() {
-        $this->_isMaster = true;
+
+    public function isMaster() {
+        return $this->_isMaster;
     }
+
 }

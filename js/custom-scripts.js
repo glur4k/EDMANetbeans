@@ -29,8 +29,8 @@ var app = app || {};
                 }
             }
         });
-        
-        xmlhttp.upload.onprogress = function(e) {
+
+        xmlhttp.upload.onprogress = function (e) {
             var percentComplete;
 
             percentComplete = Math.round((e.loaded / e.total) * 100);
@@ -41,7 +41,7 @@ var app = app || {};
         xmlhttp.send(data);
     };
 
-    getFormData = function(source) {        
+    getFormData = function (source) {
         var data = new FormData(), i;
 
         for (i = 0; i < source.length; i++) {
@@ -49,20 +49,13 @@ var app = app || {};
         }
 
         data.append('ajax', true);
+        data.append('maxsize', o.options.maxsize);
 
         return data;
     };
 
-    setProgress = function(percent) {
-        var $ppc = $('.progress-pie-chart'),
-            value = 360 * percent / 100;
-
-        if (percent > 50) {
-            $ppc.addClass('gt-50');
-        }
-
-        $('.ppc-progress-fill').css('transform', 'rotate(' + value + 'deg)');
-        $('.ppc-percents span').html(percent + '%');
+    setProgress = function (percent) {
+        drawProgress(o.options.aProgress, percent / 100, o.options.pCaption);
     };
 
     o.uploader = function (options) {
@@ -74,3 +67,56 @@ var app = app || {};
     };
 }(app));
 
+function drawInactive(iProgressCTX) {
+    iProgressCTX.lineCap = 'square';
+
+    //progress bar
+    iProgressCTX.beginPath();
+    iProgressCTX.lineWidth = 0;
+    iProgressCTX.fillStyle = 'transparent';
+    iProgressCTX.arc(27.5, 27.5, 24.4, 0, 2 * Math.PI);
+    iProgressCTX.fill();
+
+    //progressbar caption
+    iProgressCTX.beginPath();
+    iProgressCTX.lineWidth = 0;
+    iProgressCTX.fillStyle = 'transparent';
+    iProgressCTX.arc(27.5, 27.5, 20, 0, 2 * Math.PI);
+    iProgressCTX.fill();
+
+}
+function drawProgress(bar, percentage, $pCaption) {
+    var barCTX = bar.getContext("2d");
+    var quarterTurn = Math.PI / 2;
+    var endingAngle = ((2 * percentage) * Math.PI) - quarterTurn;
+    var startingAngle = 0 - quarterTurn;
+
+    bar.width = bar.width;
+    barCTX.lineCap = 'square';
+
+    barCTX.beginPath();
+    barCTX.lineWidth = 4;
+    barCTX.strokeStyle = 'white';
+    barCTX.arc(27.5, 27.5, 22.2, startingAngle, endingAngle);
+    barCTX.stroke();
+
+    $pCaption.text((parseInt(percentage * 100, 10)) + '%');
+}
+
+function checkMaxsize(size, files) {
+    var sizeTmp = 0;
+    files = files.files;
+
+    for (var i = 0; i < files.length; i++) {
+        file = files[i];
+
+        sizeTmp += file.size;
+    }
+
+    if (sizeTmp > size) {
+        return 'Die ausgewählten Dateien sind zu groß!';
+    } else if (sizeTmp === 0) {
+        return 'Bitte eine Datei auswählen!';
+    }
+    return '';
+}

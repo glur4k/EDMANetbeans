@@ -161,7 +161,7 @@ table {
 /* Messages */
 /* ------------------------------- */
 
-.alert {
+.alert-top {
     margin: 0;
     border: none;
     border-radius: 0;
@@ -188,71 +188,33 @@ table {
 
 /* Uploader */
 /* ------------------------------- */
-.progress-pie-chart {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  background-color: #E5E5E5;
-  position: relative;
-}
-.progress-pie-chart.gt-50 {
-  background-color: #81CE97;
+
+.btn#upload {
+    height: 28px;
 }
 
-.ppc-progress {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  left: calc(50% - 27.5px);
-  top: calc(50% - 27.5px);
-  width: 55px;
-  height: 55px;
-  clip: rect(0, 55px, 55px, 27.5px);
+#progress-circle {
+    width: 55px;
+    top: -10px;
+    position: absolute;
+    line-height: 0.28;
+    font-size: 12px;
 }
-.ppc-progress .ppc-progress-fill {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  left: calc(50% - 27.5px);
-  top: calc(50% - 27.5px);
-  width: 55px;
-  height: 55px;
-  clip: rect(0, 27.5px, 55px, 0);
-  background: #81CE97;
-  transform: rotate(60deg);
+.progress-circle-bar {
+    display: inline-block;
+    width: 55px;
+    height: 55px;
+    padding: 0;
+    background: none;
+    box-shadow: none;
 }
-.gt-50 .ppc-progress {
-  clip: rect(0, 27.5px, 55px, 0);
-}
-.gt-50 .ppc-progress .ppc-progress-fill {
-  clip: rect(0, 55px, 55px, 27.5px);
-  background: #E5E5E5;
-}
-
-.ppc-percents {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  left: calc(50% - 47.82609px/2);
-  top: calc(50% - 47.82609px/2);
-  width: 47.82609px;
-  height: 47.82609px;
-  background: #fff;
-  text-align: center;
-  display: table;
-}
-.ppc-percents span {
-  display: block;
-  font-size: 1em;
-  font-weight: bold;
-  color: #81CE97;
-}
-
-.pcc-percents-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.progress-pie-chart {
-  margin: 50px auto 0;
+.progress-circle-bar p {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    width: 55px;
+    top: -28px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
 }
