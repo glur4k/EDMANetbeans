@@ -81,7 +81,7 @@ if (Input::exists()) {
                 <div class="panel-heading">Vorhandene Projektbeschreibungen</div>
 
                 <!-- Tabelle -->
-                <table class="table">
+                <table class="table" id="projektbeschreibungen" data-count="3">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -93,17 +93,17 @@ if (Input::exists()) {
                         <tr>
                             <td>1</td>
                             <td>Mark</td>
-                            <td>1.1.1970</td>
+                            <td>01.01.1970</td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Jacob</td>
-                            <td>1.1.1970</td>
+                            <td>01.01.1970</td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>Larry</td>
-                            <td>1.1.1970</td>
+                            <td>01.01.1970</td>
                         </tr>
                     </tbody>
                 </table>
@@ -178,7 +178,12 @@ if (Input::exists()) {
                     pie.toggle();
                     button.toggle();
                     // Fuege Element in Tabelle ein
-                    console.log(data);
+                    var count = parseInt($('#projektbeschreibungen').data('count'));
+                    $.each(data.succeeded, function(i) {
+                        $('#projektbeschreibungen').append(
+                            '<tr><td>'+(count+(i+1))+'</td><td>'+data.succeeded[i].name+'</td><td>'+data.succeeded[i].date+'</td></tr>'
+                        );
+                    });
                 },
                 error: function (data) {
                     console.log(data);
