@@ -30,6 +30,7 @@ class Uploader {
                 if (move_uploaded_file($temp, "uploads/tmp/{$name}") === true) {
                     $this->_succeeded[] = array(
                         'name' => $name,
+                        'id' => null,
                         'date' => date('d.m.Y')
                     );
                 } else {

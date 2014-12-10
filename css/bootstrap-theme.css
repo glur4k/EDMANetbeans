@@ -148,6 +148,19 @@ table {
     border-color: white;
 }
 
+table td:last-child {
+    width: 5%;
+    min-width: 15px;
+}
+table td .glyphicon {
+    visibility: hidden;
+}
+
+table tr:hover .glyphicon {
+    visibility: visible;
+    cursor: pointer;
+}
+
 
 /* Popover */
 /* ------------------------------- */

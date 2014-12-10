@@ -1,7 +1,6 @@
 <?php
 require_once 'header.php';
 
-$projekt = new Projekt();
 if (!$projekt->isMaster()) {
     Redirect::to('login.php');
 }
@@ -86,24 +85,28 @@ if (Input::exists()) {
                         <tr>
                             <th>#</th>
                             <th>Dateiname</th>
-                            <th>Datum</th>
+                            <th class="text-right">Datum</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
                             <td>Mark</td>
-                            <td>01.01.1970</td>
+                            <td class="text-right">01.01.1970</td>
+                            <td><span class="glyphicon glyphicon-remove" aria-hidden="true" data-id="0"></span></td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Jacob</td>
-                            <td>01.01.1970</td>
+                            <td class="text-right">01.01.1970</td>
+                            <td><span class="glyphicon glyphicon-remove" aria-hidden="true" data-id="1"></span></td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>Larry</td>
-                            <td>01.01.1970</td>
+                            <td class="text-right">01.01.1970</td>
+                            <td><span class="glyphicon glyphicon-remove" aria-hidden="true" data-id="2"></span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -152,7 +155,7 @@ if (Input::exists()) {
             var aProgress = document.getElementById('activeProgress');
             var maxSize = $('#files').data('maxsize');
             var f = $('#files')[0];
-            
+
             event.preventDefault();
 
             var msg = checkMaxsize(maxSize, f);
@@ -179,16 +182,36 @@ if (Input::exists()) {
                     button.toggle();
                     // Fuege Element in Tabelle ein
                     var count = parseInt($('#projektbeschreibungen').data('count'));
-                    $.each(data.succeeded, function(i) {
+                    $.each(data.succeeded, function (i) {
                         $('#projektbeschreibungen').append(
-                            '<tr><td>'+(count+(i+1))+'</td><td>'+data.succeeded[i].name+'</td><td>'+data.succeeded[i].date+'</td></tr>'
-                        );
+                                '<tr><td>' + (count + (i + 1)) + '</td><td>' + data.succeeded[i].name + '</td><td>' + data.succeeded[i].date + '</td></tr>'
+                                );
                     });
                 },
                 error: function (data) {
                     console.log(data);
                     $('#upload-errors').append('error');
                 }
+            });
+        });
+        
+        $('.glyphicon-remove').on('click', function() {
+            $.ajax({
+                type: 'post',
+                url: 'ajaxHandler.php',
+                data: {
+                    function: "delete",
+                    element: {
+                        name: "projektbeschreibung",
+                        id: $(this).data('id')
+                    }
+                }
+            })
+            .done(function() {
+              console.log("success");
+            })
+            .fail(function() {
+              alert("error");
             });
         });
     </script>
