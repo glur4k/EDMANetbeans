@@ -56,7 +56,7 @@ if (Input::exists()) {
 ?>
 
 <h2>
-    <?php echo ($projekt->data() ? $projekt->data()->projekt . ' bearbeiten' : 'Neues Projekt anlegen'); ?>
+    <?php echo ($projekt->data() ? $projekt->data()->name . ' bearbeiten' : 'Neues Projekt anlegen'); ?>
 </h2>
 <br>
 <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
@@ -117,7 +117,7 @@ if (Input::exists()) {
                         <div class="form-horizontal" role="form">
                             <input class="col-md-9 control-label" name="file[]" id="files" type="file" id="projektbeschreibung" multiple="multiple" data-maxsize="<?php echo Utils::convertBytes(ini_get('post_max_size')); ?>">
                             <div class="col-md-3">
-                                <button type="submit" name="upload" id="upload" class="btn btn-primary btn-sm pull-right form-control">Upload</button>
+                                <button type="button" name="upload" id="upload" class="btn btn-primary btn-sm pull-right form-control">Upload</button>
                             </div>
                             <div class="col-md-3">
                                 <div id="progress-circle" style="display: none;">
@@ -148,13 +148,11 @@ if (Input::exists()) {
 
     <script>
         $('#upload').click(function (event) {
+            var f = $('#files')[0];
             var pie = $('#progress-circle');
             var errorBox = $('#upload-errors');
-            var $pCaption = $('.progress-circle-bar p');
             var button = $(this);
-            var aProgress = document.getElementById('activeProgress');
             var maxSize = $('#files').data('maxsize');
-            var f = $('#files')[0];
 
             event.preventDefault();
 
@@ -173,10 +171,14 @@ if (Input::exists()) {
 
             app.uploader({
                 files: f,
-                pCaption: $pCaption,
-                aProgress: aProgress,
+                function: 'upload',
+                element: {
+                    name: 'projektbeschreibung'
+                },
+                pCaption: $('.progress-circle-bar p'),
+                aProgress: $('#activeProgress'),
                 maxsize: maxSize,
-                processor: 'upload.php',
+                processor: 'ajaxHandler.php',
                 finished: function (data) {
                     pie.toggle();
                     button.toggle();
@@ -184,7 +186,15 @@ if (Input::exists()) {
                     var count = parseInt($('#projektbeschreibungen').data('count'));
                     $.each(data.succeeded, function (i) {
                         $('#projektbeschreibungen').append(
-                                '<tr><td>' + (count + (i + 1)) + '</td><td>' + data.succeeded[i].name + '</td><td>' + data.succeeded[i].date + '</td></tr>'
+                                '<tr><td>' + 
+                                (count + (i + 1)) + 
+                                '</td><td>' 
+                                + data.succeeded[i].name + 
+                                '</td><td>' + 
+                                data.succeeded[i].date + 
+                                '</td><td>' +
+                                '<span class="glyphicon glyphicon-remove" aria-hidden="true" data-id="' + data.succeeded[i].id + '"></span>' +
+                                '</td></tr>'
                                 );
                     });
                 },
@@ -209,9 +219,10 @@ if (Input::exists()) {
             })
             .done(function() {
               console.log("success");
+              // TODO: Tabelleneintrag löschen
             })
             .fail(function() {
-              alert("error");
+              // TODO: Fehler in $('#upload-errors') anzeigen
             });
         });
     </script>

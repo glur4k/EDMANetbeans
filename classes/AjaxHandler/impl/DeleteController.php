@@ -8,15 +8,13 @@ require_once 'core/init.php';
  * @author Sandro
  */
 class DeleteController extends AjaxController {
-    
-    public $_succeeded;
 
     public function __construct($element) {
         $name = $element['name'];
         $id = $element['id'];
 
         switch ($name) {
-            case 'projekbeschreibung':
+            case 'projektbeschreibung':
                 $this->process('anhang', $id);
                 break;
 
@@ -27,7 +25,8 @@ class DeleteController extends AjaxController {
 
     public function process($name, $id) {
         // delete from anhang where id = $id
-        $this->_succeeded = 'file';
+        $this->_succeeded[] = array(
+            'id' => 0
+        );
     }
-
 }
